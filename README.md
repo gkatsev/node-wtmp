@@ -3,6 +3,7 @@ It will be parsing the wtmp according to the info below, taken from `man wtmp`.
 
 ---
 
+``
 /* Values for ut_type field, below */
 
 #define EMPTY         0 /* Record does not contain valid info
@@ -70,4 +71,4 @@ struct utmp {
 #endif
 #define ut_xtime ut_tv.tv_sec
 #define ut_addr ut_addr_v6[0]
-
+``
