@@ -42,8 +42,11 @@ function readOneStruct(wtmp, offset){
   struct.ut_tv_usec = wtmp.readInt32LE(offset)
   offset += 4
   struct.ut_addr_v6 = []
-  struct.ut_addr_v6[0] = wtmp.readInt32LE(offset)
-  offset += 4
+  struct.ut_addr_v6[0] = []//wtmp.toString('binary', offset, (offset+=4))
+  struct.ut_addr_v6[0][0] = wtmp.readUInt8(offset++)
+  struct.ut_addr_v6[0][1] = wtmp.readUInt8(offset++)
+  struct.ut_addr_v6[0][2] = wtmp.readUInt8(offset++)
+  struct.ut_addr_v6[0][3] = wtmp.readUInt8(offset++)
   struct.ut_addr_v6[1] = wtmp.readInt32LE(offset)
   offset += 4
   struct.ut_addr_v6[2] = wtmp.readInt32LE(offset)
