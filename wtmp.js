@@ -19,8 +19,9 @@ var UT_LINESIZE = 32
 
 function readOneStruct(wtmp, offset){
   var struct = {}
-  struct.offset = {}
-  struct.offset.start = offset
+  struct.offset = {
+    start = offset
+  }
 
   struct.ut_type = wtmp.readUInt32LE(offset)
   offset += 4
