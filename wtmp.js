@@ -61,7 +61,14 @@ function readOneStruct(wtmp, offset){
 
 exports.parseWtmp = function(file){
   var wtmp = fs.readFileSync(file)
-  var foo = readOneStruct(wtmp, 0)
-  console.log(foo)
-  return foo
+    , offset = 0
+    , length = wtmp.length
+    , parsedWtmp = []
+
+  while(offset < length){
+    var struct = readOneStruct(wtmp, offset)
+    offset = struct.offset.end
+    parsedWtmp.push(struct)
+  }
+  return parsedWtmp
 }
