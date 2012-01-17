@@ -22,33 +22,33 @@ function readOneStruct(wtmp, offset){
   struct.offset = {}
   struct.offset.start = offset
 
-  struct.ut_type = wtmp.readUInt32LE(offset)
+  struct.ut_type = wtmp.readInt32LE(offset)
   offset += 4
-  struct.ut_pid = wtmp.readUInt32LE(offset)
+  struct.ut_pid = wtmp.readInt32LE(offset)
   offset += 4
   struct.ut_line = wtmp.toString('binary', offset, (offset+=UT_LINESIZE))
   struct.ut_line = struct.ut_line.replace(/\u0000/g,'')
   struct.ut_id = wtmp.toString('binary', offset, (offset+=4)).replace(/\u0000/g,'')
   struct.ut_user = wtmp.toString('binary', offset, (offset+=UT_NAMESIZE)).replace(/\u0000/g,'')
   struct.ut_host = wtmp.toString('binary', offset, (offset+=UT_HOSTSIZE)).replace(/\u0000/g,'')
-  struct.ut_exit_termination = wtmp.readUInt16LE(offset)
+  struct.ut_exit_termination = wtmp.readInt16LE(offset)
   offset += 2
-  struct.ut_exit_exit = wtmp.readUInt16LE(offset)
+  struct.ut_exit_exit = wtmp.readInt16LE(offset)
   offset += 2
-  struct.ut_session = wtmp.readUInt32LE(offset)
+  struct.ut_session = wtmp.readInt32LE(offset)
   offset += 4
-  struct.ut_tv_sec = wtmp.readUInt32LE(offset)
+  struct.ut_tv_sec = wtmp.readInt32LE(offset)
   offset += 4
-  struct.ut_tv_usec = wtmp.readUInt32LE(offset)
+  struct.ut_tv_usec = wtmp.readInt32LE(offset)
   offset += 4
   struct.ut_addr_v6 = []
-  struct.ut_addr_v6[0] = wtmp.readUInt32LE(offset)
+  struct.ut_addr_v6[0] = wtmp.readInt32LE(offset)
   offset += 4
-  struct.ut_addr_v6[1] = wtmp.readUInt32LE(offset)
+  struct.ut_addr_v6[1] = wtmp.readInt32LE(offset)
   offset += 4
-  struct.ut_addr_v6[2] = wtmp.readUInt32LE(offset)
+  struct.ut_addr_v6[2] = wtmp.readInt32LE(offset)
   offset += 4
-  struct.ut_addr_v6[3] = wtmp.readUInt32LE(offset)
+  struct.ut_addr_v6[3] = wtmp.readInt32LE(offset)
   offset += 4
   struct.__unused = wtmp.toString('binary', offset, (offset+=20)).replace(/\u0000/g,'')
 
