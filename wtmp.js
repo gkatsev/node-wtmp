@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var fs = require('fs')
 
 exports.UT_TYPE = [
@@ -72,4 +73,8 @@ exports.parseWtmp = function(file){
     parsedWtmp.push(struct)
   }
   return parsedWtmp
+}
+
+if(require.main === module) {
+  console.log(JSON.stringify(exports.parseWtmp(process.argv[2]), null, '  '))
 }
