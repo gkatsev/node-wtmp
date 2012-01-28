@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 var fs = require('fs')
 
-exports.UT_TYPE = [
+exports.TYPE = [
   'EMPTY'
 , 'RUN_LVL'
 , 'BOOT_TIME'
@@ -24,29 +24,38 @@ function readOneStruct(wtmp, offset){
     start : offset
   }
 
-  struct.ut_type = wtmp.readUInt32LE(offset)
-  struct.ut_pid = wtmp.readUInt32LE(offset += 4)
-  struct.ut_line = wtmp.toString('binary', offset += 4, (offset+=UT_LINESIZE))
-  struct.ut_line = struct.ut_line.replace(/\u0000/g,'')
-  struct.ut_id = wtmp.toString('binary', offset, (offset+=4)).replace(/\u0000/g,'')
-  struct.ut_user = wtmp.toString('binary', offset, (offset+=UT_NAMESIZE)).replace(/\u0000/g,'')
-  struct.ut_host = wtmp.toString('binary', offset, (offset+=UT_HOSTSIZE)).replace(/\u0000/g,'')
-  struct.ut_exit_termination = wtmp.readUInt16LE(offset)
-  struct.ut_exit_exit = wtmp.readUInt16LE(offset += 2)
-  struct.ut_session = wtmp.readUInt32LE(offset += 2)
-  struct.ut_tv_sec = wtmp.readUInt32LE(offset += 4)
-  struct.ut_tv_usec = wtmp.readUInt32LE(offset += 4)
+  struct.type = wtmp.readUInt32LE(offset)
+  struct.pid = wtmp.readUInt32LE(offset += 4)
+  struct.tty = wtmp.toString('binary', offset += 4, (offset+=UT_LINESIZE))
+  struct.tty = struct.tty.replace(/\u0000/g,'')
+  struct.terminal_id = wtmp.toString('binary', offset, (offset+=4)).replace(/\u0000/g,'')
+
+  struct.user = wtmp.toString('binary', offset, (offset+=UT_NAMESIZE)).replace(/\u0000/g,'')
+  struct.host = wtmp.toString('binary', offset, (offset+=UT_HOSTSIZE)).replace(/\u0000/g,'')
+
+  struct.exit = {}
+  struct.exit.termination_status = wtmp.readUInt16LE(offset)
+  struct.exit.exit_status = wtmp.readUInt16LE(offset += 2)
+
+  struct.session_id = wtmp.readUInt32LE(offset += 2)
+
+  struct.time = {}
+  struct.time.seconds = wtmp.readUInt32LE(offset += 4)
+  struct.time.microseconds = wtmp.readUInt32LE(offset += 4)
+
   offset += 4
-  struct.ut_addr_v6 = []
-  struct.ut_addr_v6[0] = []//wtmp.toString('binary', offset, (offset+=4))
-  struct.ut_addr_v6[0][0] = wtmp.readUInt8(offset++)
-  struct.ut_addr_v6[0][1] = wtmp.readUInt8(offset++)
-  struct.ut_addr_v6[0][2] = wtmp.readUInt8(offset++)
-  struct.ut_addr_v6[0][3] = wtmp.readUInt8(offset++)
-  struct.ut_addr_v6[1] = wtmp.readUInt32LE(offset)
-  struct.ut_addr_v6[2] = wtmp.readUInt32LE(offset += 4)
-  struct.ut_addr_v6[3] = wtmp.readUInt32LE(offset += 4)
-  struct.__unused = wtmp.toString('binary', offset += 4, (offset+=20)).replace(/\u0000/g,'')
+  struct.ipv6 = []
+  struct.ipv6[0] = []//wtmp.toString('binary', offset, (offset+=4))
+  struct.ipv6[0][0] = wtmp.readUInt8(offset++)
+  struct.ipv6[0][1] = wtmp.readUInt8(offset++)
+  struct.ipv6[0][2] = wtmp.readUInt8(offset++)
+  struct.ipv6[0][3] = wtmp.readUInt8(offset++)
+  struct.ipv6[1] = wtmp.readUInt32LE(offset)
+  struct.ipv6[2] = wtmp.readUInt32LE(offset += 4)
+  struct.ipv6[3] = wtmp.readUInt32LE(offset += 4)
+  struct.ipv4 = struct.ipv6[0]
+
+  struct.unused = wtmp.toString('binary', offset += 4, (offset+=20)).replace(/\u0000/g,'')
 
   struct.offset.end = offset
   return struct
