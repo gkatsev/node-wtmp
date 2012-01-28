@@ -2,7 +2,7 @@
   "author": "Gary Katsevman <node@gkatsev.com> (http://gkatsev.com)"
 , "name": "wtmp"
 , "description": "Parse wtmp log files into JSON"
-, "version": "0.5.0"
+, "version": "1.0.0"
 , "main": "wtmp.js"
 , "bin": {
     "wtmp-json": "./wtmp.js"
