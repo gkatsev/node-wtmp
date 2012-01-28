@@ -25,23 +25,17 @@ function readOneStruct(wtmp, offset){
   }
 
   struct.ut_type = wtmp.readUInt32LE(offset)
-  offset += 4
-  struct.ut_pid = wtmp.readUInt32LE(offset)
-  offset += 4
-  struct.ut_line = wtmp.toString('binary', offset, (offset+=UT_LINESIZE))
+  struct.ut_pid = wtmp.readUInt32LE(offset += 4)
+  struct.ut_line = wtmp.toString('binary', offset += 4, (offset+=UT_LINESIZE))
   struct.ut_line = struct.ut_line.replace(/\u0000/g,'')
   struct.ut_id = wtmp.toString('binary', offset, (offset+=4)).replace(/\u0000/g,'')
   struct.ut_user = wtmp.toString('binary', offset, (offset+=UT_NAMESIZE)).replace(/\u0000/g,'')
   struct.ut_host = wtmp.toString('binary', offset, (offset+=UT_HOSTSIZE)).replace(/\u0000/g,'')
   struct.ut_exit_termination = wtmp.readUInt16LE(offset)
-  offset += 2
-  struct.ut_exit_exit = wtmp.readUInt16LE(offset)
-  offset += 2
-  struct.ut_session = wtmp.readUInt32LE(offset)
-  offset += 4
-  struct.ut_tv_sec = wtmp.readUInt32LE(offset)
-  offset += 4
-  struct.ut_tv_usec = wtmp.readUInt32LE(offset)
+  struct.ut_exit_exit = wtmp.readUInt16LE(offset += 2)
+  struct.ut_session = wtmp.readUInt32LE(offset += 2)
+  struct.ut_tv_sec = wtmp.readUInt32LE(offset += 4)
+  struct.ut_tv_usec = wtmp.readUInt32LE(offset += 4)
   offset += 4
   struct.ut_addr_v6 = []
   struct.ut_addr_v6[0] = []//wtmp.toString('binary', offset, (offset+=4))
@@ -50,12 +44,9 @@ function readOneStruct(wtmp, offset){
   struct.ut_addr_v6[0][2] = wtmp.readUInt8(offset++)
   struct.ut_addr_v6[0][3] = wtmp.readUInt8(offset++)
   struct.ut_addr_v6[1] = wtmp.readUInt32LE(offset)
-  offset += 4
-  struct.ut_addr_v6[2] = wtmp.readUInt32LE(offset)
-  offset += 4
-  struct.ut_addr_v6[3] = wtmp.readUInt32LE(offset)
-  offset += 4
-  struct.__unused = wtmp.toString('binary', offset, (offset+=20)).replace(/\u0000/g,'')
+  struct.ut_addr_v6[2] = wtmp.readUInt32LE(offset += 4)
+  struct.ut_addr_v6[3] = wtmp.readUInt32LE(offset += 4)
+  struct.__unused = wtmp.toString('binary', offset += 4, (offset+=20)).replace(/\u0000/g,'')
 
   struct.offset.end = offset
   return struct
